@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1084246564743",
+    "project_id": "textbook-4297d",
+    "storage_bucket": "textbook-4297d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1084246564743:android:83b8b0782da99eaec43d22",
+        "android_client_info": {
+          "package_name": "textbook.kingdom100"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9o7CzZ6C1fDCI7RQ2sxr7CwwBYXcXn8Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

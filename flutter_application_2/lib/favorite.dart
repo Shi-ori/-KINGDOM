@@ -2,32 +2,45 @@ import 'package:flutter/material.dart';
 
 class Favorite extends StatelessWidget {
   const Favorite({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
-    final int numberOfCards = 4;
-     double cardWidth = MediaQuery.of(context).size.width * 0.4; 
+    final int numberOfCards = 3;
+    final int cardsPerRow = 2; // 1行に表示するカード数
+    double cardWidth =
+        (MediaQuery.of(context).size.width - 40) / cardsPerRow; // 幅の計算
+
     return SingleChildScrollView(
       child: Column(
-        children: List.generate((numberOfCards / 2).ceil(), //2つRowに表示
-            (int index) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              buildCard(cardWidth),
-              if (index * 2 + 1 < numberOfCards) // 奇数の場合2つ目のカードがあるかチェック
-                buildCard(cardWidth),
-            ],
-          );
-        }),
+        children: List.generate(
+          (numberOfCards / cardsPerRow).ceil(), // 2つずつRowに表示
+          (int index) {
+            // 配列のインデックスを index * cardsPerRow に基づいて計算
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                buildCard(
+                    cardWidth, index * cardsPerRow), // indexに基づいてインデックスを渡す
+                if (index * cardsPerRow + 1 <
+                    numberOfCards) // 奇数の場合2つ目のカードがあるかチェック
+                  buildCard(cardWidth, index * cardsPerRow + 1),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
 
-  Widget buildCard(double width) {
+  Widget buildCard(double width, int imageIndex) {
+    List<String> imgarr = [
+      'https://img.ips.co.jp/ij/20/1120101072/1120101072-520x.jpg',
+      'https://www.seshop.com/static/images/product/11945/L.jpg',
+      'https://image.gihyo.co.jp/assets/images/cover/2023/9784297137496.jpg',
+    ];
     return SizedBox(
       width: width,
-      height: 500,
+      height: 300, // 高さを調整
       child: Card(
         margin: const EdgeInsets.all(10),
         shape: RoundedRectangleBorder(
@@ -37,10 +50,10 @@ class Favorite extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Image.network(
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo7FLZVev8PvE4IK3-1evSjzC65pUQzCartw&usqp=CAU',
+              imgarr[imageIndex],
               fit: BoxFit.cover,
               width: double.infinity,
-              height: 300,
+              height: 150,
             ),
             const Spacer(),
             Row(
@@ -60,5 +73,4 @@ class Favorite extends StatelessWidget {
       ),
     );
   }
-  //throw UnimplementedError();
 }

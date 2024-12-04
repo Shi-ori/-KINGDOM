@@ -1,47 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/Account.dart';
 import 'package:flutter_application_2/Login.dart';
 import 'package:flutter_application_2/favorite.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(new MaterialApp(
+    home: new Login(),
+  ));
 }
 
-class Home extends StatelessWidget{
+class Home extends StatelessWidget {
   const Home({super.key});
-  
-  
 
   @override
   Widget build(BuildContext context) {
     final int numberOfCards = 5;
-    //int selectedIndex = 0;
-    double cardWidth = MediaQuery.of(context).size.width * 0.3; // 幅
-    
-    return  SingleChildScrollView(
-      child:Column(
+    final int cardsPerRow = 2; // 1行に表示するカード数
+    double cardWidth =
+        (MediaQuery.of(context).size.width - 40) / cardsPerRow; // 幅の計算
+
+    return SingleChildScrollView(
+      child: Column(
         children: List.generate(
-          (numberOfCards / 2).ceil(),//2つRowに表示
-          (int index){
+          (numberOfCards / cardsPerRow).ceil(), // 2つずつRowに表示
+          (int index) {
+            // 配列のインデックスを index * cardsPerRow に基づいて計算
             return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  buildCard(cardWidth),
-                  if (index * 2 + 1 < numberOfCards) // 奇数の場合2つ目のカードがあるかチェック
-                    buildCard(cardWidth),
-                ],
-              );
-          }
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                buildCard(
+                    cardWidth, index * cardsPerRow), // indexに基づいてインデックスを渡す
+                if (index * cardsPerRow + 1 <
+                    numberOfCards) // 奇数の場合2つ目のカードがあるかチェック
+                  buildCard(cardWidth, index * cardsPerRow + 1),
+              ],
+            );
+          },
         ),
       ),
     );
-    
-    //throw UnimplementedError();
   }
-// カードを作成するメソッド
-  Widget buildCard(double width) {
+
+  // カードを作成するメソッド
+  Widget buildCard(double width, int imageIndex) {
+    List<String> imgarr = [
+      'https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQYd7qJCwbAkpBSw7u9TZKoxgts3UKoBaJrZWZvJnxAywlIZOxswXO-AjoDjuDXTaHClEK_UMFrKjolJRVHzeEB4c05CtlzVJex964ccLKQrvM8FTn3hEo&usqp=CAc',
+      'https://img.ips.co.jp/ij/20/1120101072/1120101072-520x.jpg',
+      'https://www.seshop.com/static/images/product/11945/L.jpg',
+      'https://img.ips.co.jp/ij/22/1122101190/1122101190-520x.jpg',
+      'https://image.gihyo.co.jp/assets/images/cover/2023/9784297137496.jpg',
+    ];
+
     return SizedBox(
       width: width,
-      height: 500,
+      height: 300, // 高さを調整
       child: Card(
         margin: const EdgeInsets.all(10),
         shape: RoundedRectangleBorder(
@@ -51,10 +63,10 @@ class Home extends StatelessWidget{
         child: Column(
           children: <Widget>[
             Image.network(
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo7FLZVev8PvE4IK3-1evSjzC65pUQzCartw&usqp=CAU',
+              imgarr[imageIndex % imgarr.length], // 配列のインデックスは循環する
               fit: BoxFit.cover,
               width: double.infinity,
-              height: 300,
+              height: 150,
             ),
             const Spacer(),
             Row(
@@ -74,7 +86,6 @@ class Home extends StatelessWidget{
       ),
     );
   }
-
 }
 
 class MyApp extends StatelessWidget {
@@ -83,6 +94,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -92,8 +104,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -105,14 +115,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  //final int numberOfCards = 13; // カード数
-  int selectedIndex = 0; //フッターメニューのインデックスを一時保存する
-  List<Widget> display = [Home(), Favorite(),Login()];
+  int selectedIndex = 0; // フッターメニューのインデックスを一時保存する
+  List<Widget> display = [const Home(), const Favorite(), const Account()];
 
   @override
   Widget build(BuildContext context) {
-   // double cardWidth = MediaQuery.of(context).size.width * 0.4; // 幅
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -136,12 +143,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
         currentIndex: selectedIndex,
         onTap: (int index) {
-          selectedIndex = index;
-          setState(() {});
+          setState(() {
+            selectedIndex = index;
+          });
         },
-      )
+      ),
     );
   }
-
-  
 }
